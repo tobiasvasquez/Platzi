@@ -1,0 +1,19 @@
+{
+  "name": "platzi-async",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "callback": "node src/callback/challenge.js"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Tob",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.2.10",
+    "xmlhttprequest": "^1.8.0"
+  }
+}

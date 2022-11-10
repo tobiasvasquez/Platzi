@@ -1,0 +1,16 @@
+{
+  "name": "platziecmascript",
+  "version": "1.0.0",
+  "description": "Proyecto EcmaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Javascript",
+    "ecmascript"
+  ],
+  "author": "Tobias Vasquez <vasquezt@outlookt.es>",
+  "license": "MIT",
+  "type": "module"
+}
