@@ -1,4 +1,25 @@
+body {
+    background-color: #1B1B1B;
+    color: white;
+  }
+
 img{
     display: inline-block;
     width: 400px;
+    height: 350px;
+    border-radius: 10px;
+}
+#randomMichis{
+    display: flex;
+    justify-content: space-around;
+}
+
+article{
+    position: relative;
+}
+
+article button{
+    position: absolute;
+    bottom: 20px;
+    right: 150px;
 }

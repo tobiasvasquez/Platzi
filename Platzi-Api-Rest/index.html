@@ -1,20 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gatitos Randoms</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1> Gatitos Aleatorios </h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gatitos Randoms</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <h1>Michis App</h1>
 
-    <button> Nuevo Gatito </button>
-    <div id="catContainer">
+        <span id="error"></span>
 
-    </div>
+        <button id="newCat">Nuevo Gatito</button>
+        <div id="catContainer"></div>
+        <h2>Gatitos Aleatorios</h2>
 
-    <script src="app.js"></script>
-</body>
+        <section id="randomMichis">
+        
+            <article>
+                <img id="img1" width="150" alt="" />
+                <button id="btn1">Guardar en favoritos</button>
+            </article>
+
+            <article>
+                <img id="img2" width="150"  alt="" />
+                <button id="btn2">Guardar en favoritos</button>
+            </article>
+
+            <article>
+                <img id="img3" width="150"  alt="" />
+                <button id="btn3">Guardar en favoritos</button>
+            </article>
+        </section>
+
+        <section id="favouriteMichis">
+            <h2>Michis Favoritos</h2>
+        </section>
+
+        <script src="app.js"></script>
+    </body>
 </html>
