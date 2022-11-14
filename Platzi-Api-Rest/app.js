@@ -1,13 +1,14 @@
 const API_KEY = "live_vQkazdISMScBY08OJH9i4X92ElREP7KUARY5pnmRoQlehYgjSJ8yKCx8vpF1e54F";
-const API_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=3&api_key=${API_KEY}`;
-const API_FAVOURITES = `https://api.thecatapi.com/v1/favourites?api_key=${API_KEY}`;
-const API_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?api_key=${API_KEY}`;
+const API_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=3`;
+const API_FAVOURITES = `https://api.thecatapi.com/v1/favourites`;
+const API_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?`;
+const API_UPLOAD = "https://api.thecatapi.com/v1/images/upload";
 
 const button = document.getElementById("newCat");
 const catContainer = document.getElementById("catContainer");
 const body = document.querySelector("body");
 const spanError = document.getElementById("error");
-
+const submitButton = document.getElementById("submitButton");
 
 async function loadRandomCats() {
     const response = await fetch(API_RANDOM);
@@ -35,24 +36,30 @@ async function loadRandomCats() {
 }
 
 async function loadFavouriteCats() {
-    const response = await fetch(API_FAVOURITES);
+    const options = {
+        method: "GET",
+        headers: {
+            "x-api-key": API_KEY,
+        },
+    };
+    const response = await fetch(API_FAVOURITES, options);
     const data = await response.json();
     console.log(data);
     if (response.status !== 200) {
         spanError.innerHTML = `Hubo un error ${response.status}.`;
     } else {
-        const section = document.getElementById('favouriteMichis')
+        const section = document.getElementById("favouriteMichis");
         section.innerHTML = "";
-        const h2 = document.createElement('h2')
-        const h2Text = document.createTextNode('Michis Favoritos');
+        const h2 = document.createElement("h2");
+        const h2Text = document.createTextNode("Michis Favoritos");
         h2.appendChild(h2Text);
         section.appendChild(h2);
-        data.forEach(cat => {
-            const article = document.createElement('article');
-            const img = document.createElement('img');
-            const btn = document.createElement('button');
-            const btnText = document.createTextNode('Sacar al gatito de favoritos')
-            
+        data.forEach((cat) => {
+            const article = document.createElement("article");
+            const img = document.createElement("img");
+            const btn = document.createElement("button");
+            const btnText = document.createTextNode("Sacar al gatito de favoritos");
+
             img.src = cat.image.url;
             img.width = 150;
             btn.appendChild(btnText);
@@ -61,8 +68,8 @@ async function loadFavouriteCats() {
             article.appendChild(btn);
 
             section.appendChild(article);
-        }
-    )}
+        });
+    }
 }
 
 async function saveFavouriteCat(id) {
@@ -70,6 +77,7 @@ async function saveFavouriteCat(id) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "x-api-key": API_KEY,
         },
         body: JSON.stringify({
             image_id: id,
@@ -82,31 +90,54 @@ async function saveFavouriteCat(id) {
     if (response.status !== 200) {
         console.log(response);
         spanError.innerHTML = `Hubo un error ${response.status}. ${data.message}`;
-    }else{
-        console.log('Agregado a favoritos :D')
+    } else {
+        console.log("Agregado a favoritos :D");
         loadFavouriteCats();
     }
 }
 
-async function deleteFavouriteCat(id){
+async function deleteFavouriteCat(id) {
     const response = await fetch(API_FAVOURITES_DELETE(id), {
         method: "DELETE",
+        headers: {
+            "x-api-key": API_KEY,
+        },
     });
     console.log(response);
 
-    const data = await response.json()
+    const data = await response.json();
 
-    if(response.status !== 200){
+    if (response.status !== 200) {
         console.log(response.message);
-        spanError.innerHTML = `Hubo un error ${response.status}. Mas info: ${data.message}`
+        spanError.innerHTML = `Hubo un error ${response.status}. Mas info: ${data.message}`;
         loadFavouriteCats();
-    }else{
-        console.log('Eliminado de favoritos :(')
+    } else {
+        console.log("Eliminado de favoritos :(");
         loadFavouriteCats();
     }
+}
+
+async function uploadCatPhoto() {
+    const form = document.getElementById("uploadForm");
+    const formData = new FormData(form);
+
+    console.log(formData.get("file"));
+
+    const response = await fetch(API_UPLOAD, {
+        method: "POST",
+        headers: {
+            "x-api-key": API_KEY,
+        },
+        body: formData
+    });
+
+    const data = await response.json();
+
+    console.log(data);
 }
 
 loadRandomCats();
 loadFavouriteCats();
 
 button.addEventListener("click", loadRandomCats);
+submitButton.addEventListener("click", uploadCatPhoto);
