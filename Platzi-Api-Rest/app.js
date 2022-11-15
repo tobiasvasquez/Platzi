@@ -1,5 +1,11 @@
-const API_KEY = "live_vQkazdISMScBY08OJH9i4X92ElREP7KUARY5pnmRoQlehYgjSJ8yKCx8vpF1e54F";
-const API_RANDOM = `https://api.thecatapi.com/v1/images/search?limit=3`;
+const api = axios.create({
+    baseURL: 'https://api.thecatapi.com/v1'
+})
+
+api.defaults.headers.common['X-API-KEY'] = 'live_vQkazdISMScBY08OJH9i4X92ElREP7KUARY5pnmRoQlehYgjSJ8yKCx8vpF1e54F'
+
+const API_KEY = 'live_vQkazdISMScBY08OJH9i4X92ElREP7KUARY5pnmRoQlehYgjSJ8yKCx8vpF1e54F'
+const API_RANDOM = `https://api.thecatapi.com/v1`;
 const API_FAVOURITES = `https://api.thecatapi.com/v1/favourites`;
 const API_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?`;
 const API_UPLOAD = "https://api.thecatapi.com/v1/images/upload";
@@ -11,11 +17,14 @@ const spanError = document.getElementById("error");
 const submitButton = document.getElementById("submitButton");
 
 async function loadRandomCats() {
-    const response = await fetch(API_RANDOM);
-    const data = await response.json();
+    // const response = await fetch(API_RANDOM);
+    // const data = await response.json();
+    const cats = await api.get('/images/search?limit=3')
+    console.log(cats.data[0])
+    if (cats.data.status !== 200) {
+        spanError.innerHTML = "Hubo un error " + cats;
+        console.log(cats)
 
-    if (response.status !== 200) {
-        spanError.innerHTML = "Hubo un error " + response.status;
     } else {
         const img1 = document.getElementById("img1");
         const img2 = document.getElementById("img2");
@@ -25,13 +34,13 @@ async function loadRandomCats() {
         const btn2 = document.getElementById("btn2");
         const btn3 = document.getElementById("btn3");
 
-        img1.src = data[0].url;
-        img2.src = data[1].url;
-        img3.src = data[2].url;
+        img1.src = cats.data[0].url;
+        img2.src = cats.data[1].url;
+        img3.src = cats.data[2].url;
 
-        btn1.onclick = () => saveFavouriteCat(data[0].id);
-        btn2.onclick = () => saveFavouriteCat(data[1].id);
-        btn3.onclick = () => saveFavouriteCat(data[2].id);
+        btn1.onclick = () => saveFavouriteCat(cats.data[0].id);
+        btn2.onclick = () => saveFavouriteCat(cats.data[1].id);
+        btn3.onclick = () => saveFavouriteCat(cats.data[2].id);
     }
 }
 
@@ -44,7 +53,6 @@ async function loadFavouriteCats() {
     };
     const response = await fetch(API_FAVOURITES, options);
     const data = await response.json();
-    console.log(data);
     if (response.status !== 200) {
         spanError.innerHTML = `Hubo un error ${response.status}.`;
     } else {
@@ -73,19 +81,23 @@ async function loadFavouriteCats() {
 }
 
 async function saveFavouriteCat(id) {
-    const response = await fetch(API_FAVOURITES, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "x-api-key": API_KEY,
-        },
-        body: JSON.stringify({
-            image_id: id,
-        }),
-    });
-    console.log(response);
 
-    const data = await response.json();
+    const response = await api.post('/favourites', {
+     image_id: id
+    })
+    // const response = await fetch(API_FAVOURITES, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         "x-api-key": API_KEY,
+    //     },
+    //     body: JSON.stringify({
+    //         image_id: id,
+    //     }),
+    // });
+    // console.log(response);
+
+    // const data = await response.json();
 
     if (response.status !== 200) {
         console.log(response);
